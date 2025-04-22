@@ -11,28 +11,25 @@ const Mainpage = () => {
        
 
     }
-    const myFun = async () =>{
-        if (search == "") {
-            setMessage("Please Enter Something !")
-
+    const myFun = async () => {
+        if (search.trim() === "") {
+          setMessage("Please enter something!");
+          setData(null); // Clear previous results
+        } else {
+          const get = await fetch(
+            `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
+          );
+          const jsonData = await get.json();
+          
+          if (jsonData.meals === null) {
+            setData(null); // Clear previous data
+            setMessage("❌ This product is not available. Please check it.");
+          } else {
+            setData(jsonData.meals);
+            setMessage(""); // Clear any message if data is found
+          }
         }
-        else {
-            const get = await fetch (`https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`);
-        const jsonData = await get.json()
-        // console.log(jsonData.meals);
-        setData(jsonData.meals);
-        setMessage("")
-
-        }
-
-        
-    }
-
-
-
-    // console.log(data);
-    
-
+      };
   return (
    <>
    <h1 className='head'>FOOD RECIPE APP</h1>
